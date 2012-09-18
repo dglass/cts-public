@@ -39,7 +39,8 @@ namespace ResourceAuthorizationDemo.Filters
             //var controller = h.RequestContext.RouteData.Values["controller"];
             //var action = h.RequestContext.RouteData.Values["action"];
             var n = c.User.Identity.Name;
-            return (id != null && id.Equals("1234")); // dummy authorization condition
+//            return (id != null && id.Equals("1234")); // dummy authorization condition
+            return (id == null || id.Equals("1234") || id.Equals("7777")); // dummy authorization condition, allows listing resources (empty id)
         }
     }
 }

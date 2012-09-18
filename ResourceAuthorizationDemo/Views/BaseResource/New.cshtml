@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New BaseResource</h2>
+
+@using (Html.BeginRouteForm("BaseResource"))
+{
+    <span>Resource Id:</span> @Html.TextBox("Id")<br />
+    <input type="submit" value="create resource" />
+}

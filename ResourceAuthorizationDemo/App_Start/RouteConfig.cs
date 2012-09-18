@@ -13,11 +13,28 @@ namespace ResourceAuthorizationDemo
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // this gets the form to create a new resource.
+            // the actual Create occurs via a POST.
+            // *NOTE*, this must precede /{Id} map since it will capture every string by default.
             routes.MapRoute(
-                name: "BaseResourceRestRoute",
-                url: "baseResource/{Id}",
-                defaults: new { controller = "BaseResource", action = "Index" }
+                name: "BaseResourceNew",
+                url: "baseResource/new",
+                defaults: new { controller = "BaseResource", action = "New" }
             );
+
+            // this returns a single record; overload returns list...
+            routes.MapRoute(
+                name: "BaseResource",
+                url: "baseResource/{Id}",
+                defaults: new { controller = "BaseResource", action = "Index", Id = UrlParameter.Optional}
+            );
+
+            //// this returns list of available records...
+            //routes.MapRoute(
+            //    name: "BaseResourceListRestRoute",
+            //    url: "baseResource",
+            //    defaults: new { controller = "BaseResource", action = "List" }
+            //);
 
             routes.MapRoute(
                 name: "Default",

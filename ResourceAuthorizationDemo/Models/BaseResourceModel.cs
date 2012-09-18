@@ -12,6 +12,16 @@ namespace ResourceAuthorizationDemo.Models
             Context = HttpContext.Current;
         }
 
+        public static List<BaseResourceModel> ListResources()
+        {
+            // TODO: determine available resources to list for current user.
+            return new List<BaseResourceModel> {
+                new BaseResourceModel() { Id = "R001" },
+                new BaseResourceModel() { Id = "R002" },
+                new BaseResourceModel() { Id = "R003" }
+            };
+        }
+
         // alternate constructor takes HttpContextBase from controller to extract Authorization info
 /*        public BaseResourceModel(HttpContextBase ctx)
         {

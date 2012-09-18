@@ -1,12 +1,9 @@
 ﻿@using ResourceAuthorizationDemo.Models
 @{
-    ViewBag.Title = "Base Resource Index";
+    ViewBag.Title = "List";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@if (@Model.GetType() == typeof(BaseResourceModel)) {
-<h2>Resource Detail: #@Model.Id</h2>
-} else { // assumes Model is List<BaseResourceModel>:
 <h2>Base Resource List</h2>
 <ul>
 @foreach (BaseResourceModel brm in Model)
@@ -14,4 +11,4 @@
     <li>@brm.Id</li>
 }
 </ul>
-}
+

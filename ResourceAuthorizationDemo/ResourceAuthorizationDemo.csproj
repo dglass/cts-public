@@ -241,6 +241,8 @@
     <Content Include="packages.config" />
     <None Include="readme.txt" />
     <Content Include="Views\BaseResource\Index.cshtml" />
+    <Content Include="Views\BaseResource\List.cshtml" />
+    <Content Include="Views\BaseResource\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
