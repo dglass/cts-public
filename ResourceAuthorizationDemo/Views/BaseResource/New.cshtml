@@ -7,6 +7,6 @@
 
 @using (Html.BeginRouteForm("BaseResource"))
 {
-    <span>Resource Id:</span> @Html.TextBox("Id")<br />
+    <span>Resource Name:</span> @Html.TextBox("Name", "New Resource")<br />
     <input type="submit" value="create resource" />
 }

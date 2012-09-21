@@ -18,14 +18,22 @@ namespace ResourceAuthorizationDemo
             // *NOTE*, this must precede /{Id} map since it will capture every string by default.
             routes.MapRoute(
                 name: "BaseResourceNew",
-                url: "baseResource/new",
+                url: "resource/new",
                 defaults: new { controller = "BaseResource", action = "New" }
+            );
+
+            // this gets the form to edit a resource.
+            // the actual Update occurs via a PUT.
+            routes.MapRoute(
+                name: "BaseResourceEdit",
+                url: "resource/{Id}/edit",
+                defaults: new { controller = "BaseResource", action = "Edit" }
             );
 
             // this returns a single record; overload returns list...
             routes.MapRoute(
                 name: "BaseResource",
-                url: "baseResource/{Id}",
+                url: "resource/{Id}",
                 defaults: new { controller = "BaseResource", action = "Index", Id = UrlParameter.Optional}
             );
 

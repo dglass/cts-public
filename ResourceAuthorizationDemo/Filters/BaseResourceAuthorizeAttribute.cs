@@ -40,7 +40,8 @@ namespace ResourceAuthorizationDemo.Filters
             //var action = h.RequestContext.RouteData.Values["action"];
             var n = c.User.Identity.Name;
 //            return (id != null && id.Equals("1234")); // dummy authorization condition
-            return (id == null || id.Equals("1234") || id.Equals("7777")); // dummy authorization condition, allows listing resources (empty id)
+            //return (id == null || id.Equals("1234") || id.Equals("7777")); // dummy authorization condition, allows listing resources (empty id)
+            return true; // until done with DemoAuthorizationProvider...
         }
     }
 }

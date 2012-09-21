@@ -5,13 +5,24 @@
 }
 
 @if (@Model.GetType() == typeof(BaseResourceModel)) {
-<h2>Resource Detail: #@Model.Id</h2>
+    <ul>
+        <li>Id: @Model.Id.ToString()</li>
+        <li>Name: @Model.Name</li>
+    </ul>
+    @Html.RouteLink("edit", "BaseResourceEdit")
+    <a href="/resource">back to list</a>
 } else { // assumes Model is List<BaseResourceModel>:
 <h2>Base Resource List</h2>
+    @Html.RouteLink("add a resource", "BaseResourceNew")
 <ul>
-@foreach (BaseResourceModel brm in Model)
+@foreach (BaseResourceModel brm in (Model as Dictionary<Guid,BaseResourceModel>).Values)
 {
-    <li>@brm.Id</li>
+    <li>
+        <form action="/resource/@brm.Id" method="post">
+            @Html.RouteLink(brm.Name, "BaseResource", new { Id = brm.Id })
+            @Html.RouteLink("edit", "BaseResourceEdit", new { Id = brm.Id })
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <a href="/resource/@brm.Id" onclick="parentNode.submit(); return false;">delete</a></form></li>
 }
 </ul>
 }

@@ -243,9 +243,11 @@
     <Content Include="Views\BaseResource\Index.cshtml" />
     <Content Include="Views\BaseResource\List.cshtml" />
     <Content Include="Views\BaseResource\New.cshtml" />
+    <Content Include="Views\BaseResource\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Persistence\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

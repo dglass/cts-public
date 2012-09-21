@@ -10,7 +10,7 @@ namespace ResourceAuthorizationDemo.Models
         public bool CanRead(BaseResourceModel brm)
         {
             // dummy logic here...
-            return (brm.Id == "1234");
+            return true;
         }
     }
 }
