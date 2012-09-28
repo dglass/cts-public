@@ -1,0 +1,17 @@
+﻿@model MvcCrudDemo.Models.UserPermissions
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>User Permissions</h2>
+@using (Html.BeginRouteForm("UserPermissions"))
+{
+    @Html.CheckBox("PermitCreate", Model.PermitCreate)<span>Create</span><br />
+    @Html.CheckBox("PermitRead", Model.PermitRead)<span>Read</span><br />
+    @Html.CheckBox("PermitUpdate", Model.PermitUpdate)<span>Update</span><br />
+    @Html.CheckBox("PermitDelete", Model.PermitDelete)<span>Delete</span><br />
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <input type="submit" value="update permissions" />
+}
