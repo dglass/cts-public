@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrgManager", "OrgManager\OrgManager.csproj", "{9CCAE3F3-A405-4BBF-85A0-3EA445673E8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrgManager.Tests", "OrgManager.Tests\OrgManager.Tests.csproj", "{7A4C67A0-A5B4-418D-95D7-31A3B810C3FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CCAE3F3-A405-4BBF-85A0-3EA445673E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CCAE3F3-A405-4BBF-85A0-3EA445673E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CCAE3F3-A405-4BBF-85A0-3EA445673E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CCAE3F3-A405-4BBF-85A0-3EA445673E8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A4C67A0-A5B4-418D-95D7-31A3B810C3FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A4C67A0-A5B4-418D-95D7-31A3B810C3FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A4C67A0-A5B4-418D-95D7-31A3B810C3FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A4C67A0-A5B4-418D-95D7-31A3B810C3FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
