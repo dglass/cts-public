@@ -13,7 +13,7 @@
         // (more efficient)
         //			url: '/Node/Index/' + rootNodeId,
         //			url: '/orgunit/' + rootNodeId,
-        url: approot + 'orgunit/1', // *NOTE*, global approot is set in Index.cshtml.  OrgUnitId #1 is all CTS.
+        url: approot + 'orgunit/2', // *NOTE*, global approot is set in Index.cshtml.  OrgUnitId #2 is all CTS (aka "DIRECTOR").
         // *NOTE*, d collection result is coerced into an array
         success: function (d) {
             bindTree(d);
