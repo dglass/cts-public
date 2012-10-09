@@ -8,13 +8,13 @@ namespace MvcCrudDemo.Filters
 {
     public class BaseAuthorizationProvider
     {
-    	private readonly Dictionary<string, ActionFlags> _actions = new Dictionary<string, ActionFlags>();
-        private readonly HttpContextBase _context;
-        private readonly HttpVerbs _httpverb;
-        private readonly string _action;
-        private readonly string _controller;
+    	protected readonly Dictionary<string, ActionFlags> Actions = new Dictionary<string, ActionFlags>();
+		protected readonly HttpContextBase Context;
+		protected readonly HttpVerbs Httpverb;
+		protected readonly string Action;
+		protected readonly string Controller;
         //private readonly string _id; // specific record id, if provided
-        private readonly Dictionary<HttpVerbs, ModelAction> _verbaction = new Dictionary<HttpVerbs, ModelAction> {
+		protected readonly Dictionary<HttpVerbs, ModelAction> VerbAction = new Dictionary<HttpVerbs, ModelAction> {
             { HttpVerbs.Post, ModelAction.Create },
             { HttpVerbs.Get, ModelAction.Read },
             { HttpVerbs.Put, ModelAction.Update },
@@ -23,13 +23,13 @@ namespace MvcCrudDemo.Filters
 
     	public BaseAuthorizationProvider(HttpContextBase hcb)
         {
-            _context = hcb;
-            var rdv = ((MvcHandler)_context.CurrentHandler).RequestContext.RouteData.Values;
-            _httpverb = (HttpVerbs)(Enum.Parse(typeof(HttpVerbs), _context.Request.GetHttpMethodOverride(), true)); // returns actual method if no override specified.
+            Context = hcb;
+            var rdv = ((MvcHandler)Context.CurrentHandler).RequestContext.RouteData.Values;
+            Httpverb = (HttpVerbs)(Enum.Parse(typeof(HttpVerbs), Context.Request.GetHttpMethodOverride(), true)); // returns actual method if no override specified.
             // assumes specific Resources will be accessed by Id (see BaseResourceModel)
             // _id = rdv.ContainsKey("Id") ? rdv["Id"].ToString() : "";
-            _controller = rdv["controller"].ToString();
-            _action = rdv["action"].ToString();
+            Controller = rdv["controller"].ToString();
+            Action = rdv["action"].ToString();
             //var n = _context.User.Identity.Name;
             Init();
         }
@@ -38,46 +38,46 @@ namespace MvcCrudDemo.Filters
         {
             // initialize permissions from cached UserPermissions (test purposes only)...
             // NOTE, this must occur *BEFORE* any Controller actions.
-            _context.Cache["UserPermissions"] = _context.Cache["UserPermissions"] ?? new UserPermissions();
-            var up = (UserPermissions)_context.Cache["UserPermissions"];
+            Context.Cache["UserPermissions"] = Context.Cache["UserPermissions"] ?? new UserPermissions();
+            var up = (UserPermissions)Context.Cache["UserPermissions"];
             var af = new ActionFlags();
             af = up.PermitCreate ? af | ActionFlags.Create : af;
             af = up.PermitRead ? af | ActionFlags.Read : af;
             af = up.PermitUpdate ? af | ActionFlags.Update : af;
             af = up.PermitDelete ? af | ActionFlags.Delete : af;
-            Allow(_controller, af);
+            Allow(Controller, af);
         }
 
         // set individual flag:
         public void Allow(string controller, ModelAction a) {
-            _actions[controller] = _actions.ContainsKey(controller) ? _actions[controller] | (ActionFlags)a : (ActionFlags)a;
+            Actions[controller] = Actions.ContainsKey(controller) ? Actions[controller] | (ActionFlags)a : (ActionFlags)a;
         }
 
         // sets all flags at once:
         public void Allow(string controller, ActionFlags af)
         {
-            _actions[controller] = af;
+            Actions[controller] = af;
         }
 
         // implicit ModelAction, based on HTTP verb:
         public bool Can()
         {
             // ties access to new/edit forms to Create/Update privileges:
-        	return _action.Equals("New") ? Can(ModelAction.Create)
-        	       	: _action.Equals("Edit") ? Can(ModelAction.Update)
-        	       	: Can(_verbaction[_httpverb]);
+        	return Action.Equals("New") ? Can(ModelAction.Create)
+        	       	: Action.Equals("Edit") ? Can(ModelAction.Update)
+        	       	: Can(VerbAction[Httpverb]);
         }
 
         // explicit ModelAction:
         public bool Can(ModelAction ma)
         {
-            return _actions.ContainsKey(_controller) && (_actions[_controller] & (ActionFlags)ma) > 0;
+            return Actions.ContainsKey(Controller) && (Actions[Controller] & (ActionFlags)ma) > 0;
         }
 
         public void Disallow(string controller, ModelAction a) {
-            if (_actions.ContainsKey(controller))
+            if (Actions.ContainsKey(controller))
             {
-                _actions[controller] = _actions[controller] ^ (ActionFlags)a;
+                Actions[controller] = Actions[controller] ^ (ActionFlags)a;
             }
         }
     }

@@ -9,35 +9,41 @@ namespace MvcCrudDemo
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            // this gets the form to create a new resource.
-            // the actual Create occurs via a POST.
-            // *NOTE*, this must precede /{Id} map since it will capture every string by default.
+            // /new gets the *form* to create a new resource.
+            // the actual Create occurs via a POST to [ModelName]List route.
+            // [ModelName]New = form for creating new record
             routes.MapRoute(
-                name: "BaseResourceNew",
-                url: "resource/new",
-                defaults: new { controller = "BaseResource", action = "New" }
+                name: "PersonNew",
+                url: "person/new", // *NOTE*, /new must precede /{Id}
+                defaults: new { controller = "Person", action = "PersonNew" }
             );
 
-            // this gets the form to edit a resource.
-            // the actual Update occurs via a PUT.
+            // [ModelName]List = list existing Models
             routes.MapRoute(
-                name: "BaseResourceEdit",
-                url: "resource/{Id}/edit",
-                defaults: new { controller = "BaseResource", action = "Edit" }
+                name: "PersonList",
+                url: "persons",
+                defaults: new { controller = "Person", action = "PersonList" }
             );
 
-            // this returns a single record; overload returns list...
+            // [ModelName]Detail = single record
             routes.MapRoute(
-                name: "BaseResource",
-                url: "resource/{Id}",
-                defaults: new { controller = "BaseResource", action = "Index", Id = UrlParameter.Optional }
+                name: "PersonDetail",
+                url: "person/{Id}",
+                defaults: new {controller = "Person", action = "PersonDetail" }
+            );
+
+            // [ModelName]Edit = edit single record
+            routes.MapRoute(
+                name: "PersonEdit",
+                url: "person/{Id}/edit",
+                defaults: new { controller = "Person", action = "PersonEdit" }
             );
 
             // for demonstrating behavior under different permission settings:
             routes.MapRoute(
                 name: "UserPermissions",
                 url: "permissions",
-                defaults: new { controller = "UserPermissions", action = "Index" }
+                defaults: new { controller = "UserPermissions", action = "SetPermissions" }
             );
 
             routes.MapRoute(

@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -122,10 +126,6 @@
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
     </Reference>
-    <Reference Include="Antlr3.Runtime">
-      <Private>True</Private>
-      <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -133,7 +133,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BaseResourceController.cs" />
+    <Compile Include="Controllers\CachedResourceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\UserPermissionsController.cs" />
     <Compile Include="Filters\BaseAuthorizationProvider.cs" />
     <Compile Include="Filters\BaseResourceAuthorizeAttribute.cs" />
@@ -142,6 +144,8 @@
     </Compile>
     <Compile Include="Models\BaseAppUser.cs" />
     <Compile Include="Models\BaseResource.cs" />
+    <Compile Include="Models\CachedResource.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Models\UserPermissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -248,10 +252,15 @@
     <Content Include="Views\Web.config" />
     <Content Include="packages.config" />
     <None Include="readme.txt" />
-    <Content Include="Views\BaseResource\Index.cshtml" />
-    <Content Include="Views\BaseResource\New.cshtml" />
-    <Content Include="Views\BaseResource\Edit.cshtml" />
     <Content Include="Views\UserPermissions\Index.cshtml" />
+    <Content Include="Views\CachedResource\Index.cshtml" />
+    <Content Include="Views\CachedResource\Edit.cshtml" />
+    <Content Include="Views\CachedResource\New.cshtml" />
+    <Content Include="Views\UserPermissions\SetPermissions.cshtml" />
+    <Content Include="Views\Person\PersonList.cshtml" />
+    <Content Include="Views\Person\PersonDetail.cshtml" />
+    <Content Include="Views\Person\PersonEdit.cshtml" />
+    <Content Include="Views\Person\PersonNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -272,7 +281,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>32414</DevelopmentServerPort>
+          <DevelopmentServerPort>1818</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

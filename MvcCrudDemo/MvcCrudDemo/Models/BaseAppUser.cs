@@ -4,16 +4,16 @@ namespace MvcCrudDemo.Models
 {
     public class BaseAppUser
     {
-        private BaseAuthorizationProvider _bap; // potential dependency for DI
+        protected BaseAuthorizationProvider Bap; // potential dependency for DI
 
         public BaseAppUser(BaseAuthorizationProvider bap)
         {
-            _bap = bap;
+            Bap = bap;
         }
 
         public bool Can()
         {
-            return _bap.Can();
+            return Bap.Can();
         }
 
     }

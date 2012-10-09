@@ -1,14 +1,13 @@
-﻿﻿@using MvcCrudDemo.Models
-@model MvcCrudDemo.Models.BaseResource
+﻿@model MvcCrudDemo.Models.CachedResource
 
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Update Resource</h2>
+<h2>Update Cached Resource</h2>
 
-@using (Html.BeginRouteForm("BaseResource", new { Model.Id }))
+@using (Html.BeginRouteForm("CachedResource", new { Model.Id }))
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
     <span>Resource Name:</span> @Html.TextBox("Name", Model.Name)<br />

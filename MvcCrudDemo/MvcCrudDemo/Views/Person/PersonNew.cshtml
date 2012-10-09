@@ -1,0 +1,16 @@
+﻿@model MvcCrudDemo.Models.Person
+
+@{
+    ViewBag.Title = "PersonNew";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New @Model.ModelType.Name</h2>
+
+@using (Html.BeginRouteForm("PersonList"))
+{
+    <span>Resource Name:</span> @Html.TextBox("Name", "New Resource")<br />
+    <span>First Name:</span> @Html.TextBox("FirstName", "First")<br />
+    <span>Last Name:</span> @Html.TextBox("LastName", "Last")<br />
+    <input type="submit" value="create @Model.ModelType.Name" />
+}

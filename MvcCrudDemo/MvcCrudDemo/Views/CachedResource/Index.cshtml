@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using MvcCrudDemo.Models
+@{
+    ViewBag.Title = "Cached Resource Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (@Model.GetType() == typeof(CachedResource)) {
+    <ul>
+        <li>Id: @Model.Id.ToString()</li>
+        <li>Name: @Model.Name</li>
+    </ul>
+    @Html.RouteLink("edit", "CachedResourceEdit")
+    @Html.RouteLink("back to list", "CachedResource", new { Id = string.Empty})
+} else { // assumes Model is List<BaseResource>:
+<h2>Cached Resource List</h2>
+    @Html.RouteLink("add a resource", "CachedResourceNew")
+<ul>
+@foreach (CachedResource br in ((Dictionary<Guid, CachedResource>)Model).Values)
+{
+    <li>
+        @using (@Html.BeginRouteForm("CachedResource", new RouteValueDictionary(new { br.Id }), FormMethod.Post))
+        {
+            @Html.RouteLink(br.Name, "CachedResource", new { br.Id })
+            @Html.RouteLink("edit", "CachedResourceEdit", new { br.Id })
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            @Html.RouteLink("delete", "CachedResource", new { br.Id }, new { onclick = "parentNode.submit(); return false;" })
+        }
+   </li>
+}
+</ul>
+}

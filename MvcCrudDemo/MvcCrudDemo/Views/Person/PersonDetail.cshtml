@@ -1,0 +1,15 @@
+﻿@model MvcCrudDemo.Models.Person
+
+@{
+    ViewBag.Title = "PersonDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Person Detail</h2>
+
+<ul>
+    <li>@Model.FirstName</li>
+    <li>@Model.LastName</li>
+    @Html.RouteLink("edit", Model.ModelType.Name + "Edit")
+    @Html.RouteLink("back to list", Model.ModelType.Name + "List")
+</ul>

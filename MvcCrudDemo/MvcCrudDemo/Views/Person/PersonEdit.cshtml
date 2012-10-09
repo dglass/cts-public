@@ -1,0 +1,16 @@
+﻿@model MvcCrudDemo.Models.Person
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Update @Model.ModelType.Name</h2>
+
+@using (Html.BeginRouteForm(Model.ModelType.Name + "Detail", new { Model.Id }))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <span>First Name:</span> @Html.TextBox("FirstName", Model.FirstName)<br />
+    <span>Last Name:</span> @Html.TextBox("LastName", Model.LastName)<br />
+    <input type="submit" value="Update @Model.ModelType.Name" />
+}

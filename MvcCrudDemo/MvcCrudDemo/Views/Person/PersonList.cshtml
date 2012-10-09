@@ -1,0 +1,22 @@
+﻿@using MvcCrudDemo.Models
+@{
+    ViewBag.Title = "PersonList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Person List</h2>
+    @Html.RouteLink("add a person", "PersonNew")
+<ul>
+@foreach (Person p in ((Dictionary<Guid, object>)Model).Values)
+{
+    <li>
+        @using (@Html.BeginRouteForm(p.ModelType.Name + "Detail", new RouteValueDictionary(new { p.Id }), FormMethod.Post))
+        {
+            @Html.RouteLink(p.FirstName + " " + p.LastName, p.ModelType.Name + "Detail", new { p.Id })
+            @Html.RouteLink("edit", p.ModelType.Name + "Edit", new { p.Id })
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            @Html.RouteLink("delete", p.ModelType.Name + "Detail", new { p.Id }, new { onclick = "parentNode.submit(); return false;" })
+        }
+   </li>
+}
+</ul>
