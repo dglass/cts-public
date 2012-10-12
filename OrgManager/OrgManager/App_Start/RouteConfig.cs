@@ -16,8 +16,14 @@ namespace OrgManager
             routes.MapRoute(
                 name: "OrgUnit",
                 url: "orgUnit/{Id}",
-                defaults: new { controller="OrgUnit", action="GetTree", id = UrlParameter.Optional }
+                defaults: new { controller="OrgUnit", action="DeptOp", id = UrlParameter.Optional }
             );
+
+			routes.MapRoute(
+				name: "OrgUnitNode",
+				url: "orgUnitNode/{Id}",
+				defaults: new { controller = "OrgUnit", action = "NodeOp", id = UrlParameter.Optional }
+			);
 
             routes.MapRoute(
                 name: "Default",

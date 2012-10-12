@@ -5,6 +5,7 @@ using System.Web.Configuration;
 
 namespace OrgManager.Models
 {
+	// TODO: subclass BaseResource...
     public class BaseDbModel
     {
         public string ConnStr { get; set; }

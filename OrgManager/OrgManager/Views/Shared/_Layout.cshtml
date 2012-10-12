@@ -3,12 +3,20 @@
     <head>
         <meta charset="utf-8" />
         <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+		        <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+@if (ViewBag.CssPaths != null)
+ {
+        foreach (string path in ViewBag.CssPaths)
+        {
+        <link href="@Url.Content(@path)" rel="Stylesheet" type="text/css" />
+        }
+ }
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
         <script type='text/javascript' src='@Url.Content("~/Scripts/jquery-1.7.1.min.js")'></script>
-        <script type='text/javascript' src='@Url.Content("~/Scripts/jquery-ui.1.8.20.min.js")'></script>
+        <script type='text/javascript' src='@Url.Content("~/Scripts/jquery-ui-1.8.20.min.js")'></script>
         @* conditional per-view JS lib load and OnReady: *@
 	    @if (ViewBag.LibPaths != null)
 	    {
@@ -38,8 +46,6 @@
                     <nav>
                         <ul id="menu">
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                         </ul>
                     </nav>
                 </div>

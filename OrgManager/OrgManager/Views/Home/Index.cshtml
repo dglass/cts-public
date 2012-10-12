@@ -4,12 +4,16 @@
     // setting LibPaths per view enables loading different supplementary libs for each view.
     // _Layout.cshtml loads jquery and jqueryui.
     ViewBag.LibPaths = new List<string>() {
+		"/Scripts/jstree/jquery.hotkeys.js",
 		"/Scripts/jstree/jquery.jstree.js",
         "/Scripts/app/orgtree.js"
 	};
     // function invoked immediately on ready...
-    var funcInvoke = String.Format("function() {{ approot='{0}'; getData(); }}", Url.Content("~"));
+    var funcInvoke = String.Format("function() {{ approot='{0}'; getData(); createDialogs();}}", Url.Content("~"));
 //	var funcInvoke = "function() { buildTree(); }";
 	ViewBag.OnReady = Html.Raw(funcInvoke);
 }
 <div id="OrgTree">Loading Org Structure...</div>
+<div id="DeptDetail" title="edit department">
+	short name:<input id="ShortName" type="text" />
+</div>

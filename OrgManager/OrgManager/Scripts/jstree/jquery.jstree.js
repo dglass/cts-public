@@ -1518,6 +1518,27 @@
 			this.enable_hotkeys();
 		},
 		defaults : {
+			// TODO: move customizations to orgtree.js, disable hotkey plugin.
+			// NOTE, cursor nav breaks with leaf nodes described as non-leaf nodes (must be collapsed).
+			"up" : function () { 
+				// DRG: removed hover selection:
+				//				var o = this.data.ui.hovered || this.data.ui.last_selected || -1;
+				var o = this.data.ui.last_selected || -1;
+				//this.hover_node(this._get_prev(o));
+				this.deselect_all();
+				this.select_node(this._get_prev(o));
+				return false; 
+			},
+			"down" : function () { 
+				// DRG: removed hover selection:
+				//				var o = this.data.ui.hovered || this.data.ui.last_selected || -1;
+				var o = this.data.ui.last_selected || -1;
+				//this.hover_node(this._get_next(o));
+				this.deselect_all();
+				this.select_node(this._get_next(o));
+				return false;
+			},
+			/* ORIG:
 			"up" : function () { 
 				var o = this.data.ui.hovered || this.data.ui.last_selected || -1;
 				this.hover_node(this._get_prev(o));
@@ -1548,7 +1569,37 @@
 				this.hover_node(this._get_next(o));
 				return false;
 			},
-			"left" : function () { 
+			*/
+			"left" : function () {
+				// DRG: removed hover selection:
+				//				var o = this.data.ui.hovered || this.data.ui.last_selected;
+				var o = this.data.ui.last_selected;
+				if(o) {
+					if (o.hasClass("jstree-open")) { this.close_node(o); }
+						//else { this.hover_node(this._get_prev(o)); }
+					else {
+						this.deselect_all();
+						this.select_node(this._get_prev(o));
+					}
+				}
+				return false;
+			},
+			"right" : function () { 
+				// DRG: removed hover selection:
+				//				var o = this.data.ui.hovered || this.data.ui.last_selected;
+				var o = this.data.ui.last_selected;
+				if(o && o.length) {
+					if(o.hasClass("jstree-closed")) { this.open_node(o); }
+						//else { this.hover_node(this._get_next(o)); }
+					else {
+						this.deselect_all();
+						this.select_node(this._get_next(o));
+					}
+				}
+				return false;
+			},
+			/* ORIG:
+			"left": function () {
 				var o = this.data.ui.hovered || this.data.ui.last_selected;
 				if(o) {
 					if(o.hasClass("jstree-open")) { this.close_node(o); }
@@ -1612,7 +1663,8 @@
 			},
 			"f2" : function () { this.rename(this.data.ui.hovered || this.data.ui.last_selected); },
 			"del" : function () { this.remove(this.data.ui.hovered || this._get_node(null)); }
-		},
+			*/
+},
 		_fn : {
 			enable_hotkeys : function () {
 				this.data.hotkeys.enabled = true;

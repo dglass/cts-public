@@ -4,6 +4,13 @@
  * Supported plugins: ui (hovered, clicked), checkbox, contextmenu, search
  */
 
+/* begin customizations -DRG */
+.jstree-default .async-op
+{
+    color: #CC6600;
+}
+/* end customizations -DRG */
+
 .jstree-default li, 
 .jstree-default ins { background-image:url("d.png"); background-repeat:no-repeat; background-color:transparent; }
 .jstree-default li { background-position:-90px 0; background-repeat:repeat-y; }

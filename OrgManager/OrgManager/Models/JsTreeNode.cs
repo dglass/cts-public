@@ -38,7 +38,8 @@ namespace OrgManager.Models
 			_node = bnm;
 			data = bnm.Name;
 			attr = new NodeAttr { id = bnm.Id };
-			state = "open"; // default all nodes/folders to "open"
+//			state = "open"; // default all nodes/folders to "open"
+			state = children.Count > 0 ? "open" : "leaf"; // TODO: "closed" for collapsed lazy-load.
 		}
 
 		//public static List<JsTreeNode> GetDummyTree()

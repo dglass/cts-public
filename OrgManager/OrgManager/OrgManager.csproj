@@ -124,6 +124,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BaseResourceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OrgUnitController.cs" />
     <Compile Include="Global.asax.cs">
@@ -131,6 +132,7 @@
     </Compile>
     <Compile Include="Models\BaseDbModel.cs" />
     <Compile Include="Models\BaseNodeModel.cs" />
+    <Compile Include="Models\BaseResource.cs" />
     <Compile Include="Models\JsTreeNode.cs" />
     <Compile Include="Models\NodeAttr.cs" />
     <Compile Include="Models\OrgUnit.cs" />
@@ -206,6 +208,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jstree\jquery.hotkeys.js" />
     <Content Include="Scripts\jstree\jquery.jstree.js" />
     <Content Include="Scripts\jstree\themes\default\d.gif" />
     <Content Include="Scripts\jstree\themes\default\d.png" />
