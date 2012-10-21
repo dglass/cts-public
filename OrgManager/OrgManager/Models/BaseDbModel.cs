@@ -8,7 +8,7 @@ namespace OrgManager.Models
 	// TODO: subclass BaseResource...
     public class BaseDbModel
     {
-        public string ConnStr { get; set; }
+        public static string ConnStr { get; set; }
         public int Id { get; set; }
         public BaseDbModel()
         {

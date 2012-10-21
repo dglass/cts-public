@@ -10,12 +10,23 @@ namespace OrgManager.Models
 		public int Level { get; set; } // TODO: remove? should probably be implicit.
 		//public int ParentId { get; set; } // UNNEEDED, implicit in Subnodes.
 		public string Name { get; set; }
+		public int SibIndex { get; set; } // for setting sibling rank during node move operations
+		public int ParentId { get; set; } // for node move ops
+		public UpdateActions UpdateAction { get; set; }
 		public List<BaseNodeModel> NodeList = new List<BaseNodeModel>(); // holds tree-sorted resultsets
 		private List<BaseNodeModel> _subnodes = new List<BaseNodeModel>();
 		public List<BaseNodeModel> SubNodes
 		{
 			get { return _subnodes; }
 		}
+
+		// this is to facilitate multiple kinds of Update Actions without having to check what changed each time:
+		public enum UpdateActions
+		{
+			Rename,
+			Update,
+			Move
+		};
 
 		/// <summary>
 		/// builds hierarchical structure from sorted tree list.

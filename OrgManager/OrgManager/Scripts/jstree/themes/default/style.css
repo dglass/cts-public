@@ -9,6 +9,19 @@
 {
     color: #CC6600;
 }
+
+/* not sure why this is needed, but it is... also manually changed top from 0px to -5px in jstree.js */
+/* TODO: fix hardcoded 150px textbox width in jstree... */
+.jstree-rename-input {
+	font-size: 14px; /* Chrome seems to ignore */
+	font-family: 'Segoe UI';
+}
+
+/* this is to remove orange box in Chrome: */
+input:focus {
+	outline:none;
+}
+
 /* end customizations -DRG */
 
 .jstree-default li, 

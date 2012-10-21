@@ -48,6 +48,8 @@ function getData() {
         //    xhr.setRequestHeader("X-Http-Method-Override", "GET");
         //}
     });
+	// populating this server-side for now
+    //$('#HrmsOrgUnit').html("<option value=''> - none - </option><option value='1234'>FirstOrgUnit</option>");
 }
 
 //function buildTree() {
@@ -84,29 +86,63 @@ function bindTree(rootNode) {
     		// to clear them, assign false to them.
     		// https://groups.google.com/forum/?fromgroups=#!topic/jstree/AC8U-OEV14s
     		items: {
-    			//rename: {
-    			//	label: "Rename", // asyncRenameNode is triggered by post-rename event binding, no need to explicitly attach it here.
-    			//	action: function (obj) { asyncRenameNode(obj); }
-    			//},
-    			//remove: false, // delete
-    			create: {
-    				label: "Create",
+    			create: false,
+    			createUnit: {
+    				label: "Add Subunit",
     				action: beginAppendNode
     			},
+    			rename: false,
+    			remove: false, // delete
     			edit: {
-    				label: "Edit Detail",
+    				label: "View / Edit Detail",
     				action: showEditForm
     			},
-    			remove: {
+    			renameUnit: {
+    				label: "Rename", // asyncRenameNode is triggered by post-rename event binding, no need to explicitly attach it here.
+    				//action: function (obj) { asyncRenameNode(obj); }
+    				action: function () { jst.rename(jst.get_selected()); }
+    			},
+    			move: {
+    				label: "Move",
+    				submenu: {
+    					up: {
+    						label: "Up",
+    						action: function (n) { moveNode(n, "up"); }
+    					},
+    					down: {
+    						label: "Down",
+    						action: function (n) { moveNode(n, "down"); }
+    					},
+    					indent: {
+    						label: "Indent",
+    						action: function (n) { moveNode(n, "in"); }
+    					},
+    					outdent: {
+    						label: "Outdent",
+    						action: function (n) { moveNode(n, "out"); }
+    					}
+    				}
+    			},
+    			remove: false, // to control item order must disable built-in options.
+    			deleteItem: {
     				label: "Delete",
     				action: asyncDeleteNode
     			},
 				ccp: false // cut, copy, paste
 			}
     	},
-        core: { animation: 80 }, // milliseconds
+    	core: { animation: 80 }, // milliseconds
+    	crrm: {
+    		move: {
+    			check_move: function (m) {
+    				// capture original node index position here for use in move among siblings:
+    				origSibIndex = m.o.parent().children().index($(m.o)[0])
+    				return true;
+    			}
+    		}
+    	},
 	    json_data: { data: rootNode },
-	    plugins: ["contextmenu", "crrm", "hotkeys", "json_data", "themes", "ui"] // removed hotkeys for this app
+	    plugins: ["contextmenu", "crrm", "hotkeys", "json_data", "themes", "ui"] // using contextmenu in/up/out/down for now, instead of dnd.
     });
 	// now set remaining bindings:
     setupBindings();
@@ -115,6 +151,7 @@ function bindTree(rootNode) {
 
 function setupBindings() {
 	orgtree.bind("rename.jstree", asyncRenameNode); // fires after losing textbox edit focus
+	orgtree.bind("move_node.jstree", asyncMoveNode);
 	//orgtree.bind("delete_node.jstree", asyncDeleteNode); // only fires *after* node is deleted.  must fire before delete.
 	// binding create_node is nothing but trouble! must handle pre-create event; this is post-create.
 	//orgtree.bind("create_node.jstree", beginAppendNode);  // need to suspend this binding or it will re-trigger itself recursively.
@@ -133,7 +170,10 @@ function showEditForm(n) {
 			var dv = eval(d); // this to convert JSON string into JS object.
 			$(n[0].childNodes[1]).toggleClass('async-op');
 			$('#ShortName').val(dv['ShortName']);
+			$('#Code').val(dv['Code']);
+			$('#HrmsOrgUnit').val(dv['HrmsOrgUnit']);
 			$('#DeptDetail').dialog('open');
+			$('#DeptDetail').dialog('option', 'title', 'update ' + dv['Name']);
 		}
 	});
 }
@@ -208,7 +248,99 @@ function asyncAppendNode(n, pos) { // pos sets head ("first") or tail ("last")
 	});
 }
 
+function moveNode(n, direction) {
+	var pn = n.parent();
+	if (direction == "down") {
+		if (n.index() < pn.children().length - 1) { // stop after reaching end of sibling list
+			jst.move_node(n, pn.children()[n.index() + 1], "after");
+		}
+	}
+	else if (direction == "up") {
+		if (n.index()) { // stop moving after reaching the top
+			// move "before" prior sibling:
+			jst.move_node(n, pn.children()[n.index() - 1], "before");
+		}
+	}
+	else if (direction == "in") {
+		if (n.index()) { // top sibling can't be indented
+			// move to final child of prior sibling:
+			// *NOTE*: this fails when prior sibling is a leaf node!
+			// same problem with dropping onto a leaf node.
+			//                      var prevsib = pn.children()[sn.index() - 1];
+			//                      var prevsib = pn[0].childNodes[sn.index() - 1];
+			// this doesn't necessarily return previous sibling, just previous node!
+			// so must keep backing up until finding previous sibling (node with same parent
+			var prevsib = jst._get_prev(n, true); // true forces sibling context (default is false)
+			jst.move_node(n, prevsib, "inside");
+		}
+	}
+	else if (direction == "out") {
+		jst.move_node(n, pn, "after");
+	}
+}
+
+function asyncMoveNode(event, data) {
+	// DRG - *NOTE* bug in calculated position when dragging
+	// to end sibling position under same parent.
+	// item being moved is apparently used for the calculation.
+	// FIX: decrement sibIndex if moved further in sibling list
+
+	// http://groups.google.com/group/jstree/browse_thread/thread/21a9d84b36a5b0bb/ed6cb91acbd57c7c?lnk=raot&pli=1
+	//              Inside the move_node callback use the data.rslt param has the 
+	//              following structure: 
+	//              .o - the node being moved 
+	//              .r - the reference node in the move 
+	//              .ot - the origin tree instance 
+	//              .rt - the reference tree instance 
+	//              .p - the position to move to (may be a string - "last", "first", etc) 
+	//              .cp - the calculated position to move to (always a number) 
+	//              .np - the new parent 
+	//              .oc - the original node (if there was a copy) 
+	//              .cy - boolen indicating if the move was a copy 
+	//              .cr - same as np, but if a root node is created this is -1 
+	//              .op - the former parent 
+	//              .or - the node that was previously in the position of the moved node
+
+	// subtract one from cp when moving node to a subsequent sibling position:
+	// TODO: modify sproc to abort transaction rather than create a gap among siblings.
+	// var node = data.args[0]; // args[0] is tree?
+
+	var dnd = data.args[0];
+	// first set text orange to indicate async op:
+	var atag = dnd.o[0].childNodes[1];
+	var jtag = $(atag);
+	jtag.toggleClass('async-op');
+
+	// need to handle case of dragging within sibling list, past a sibling with children.
+	// apparently this doesn't always trigger "after" position.
+	// (looks like can easily switch between 'before' and 'after' !!!)
+	// *NOTE* 'before' and 'after' refer to the drop target!!!
+	// rather than looking at dnd.p we must determine whether the new index
+	// is greater than the start index.
+
+	// this gets the NEW nodeIndex, not the original.
+	// Original is cached into origSibIndex on crrm.move.checkmove
+	var nodeIndex = dnd.o.parent().children().index($(dnd.o)[0]);
+	//var sibIndex = (dnd.op.attr('id') == dnd.np.attr('id') && (dnd.p == "after" || dnd.p == "last")) ? dnd.cp - 1 : dnd.cp;
+	var sibIndex = (dnd.op.attr('id') == dnd.np.attr('id') && nodeIndex > origSibIndex) ? dnd.cp - 1 : dnd.cp;
+	$.ajax({
+		url: approot + ouPath + dnd.o.attr('id'),
+		beforeSend: function (xhr) {
+			xhr.setRequestHeader("X-Http-Method-Override", "PUT");
+		},
+		data: {
+			updateAction: 'Move',
+			parentId: dnd.np.attr('id'),
+			sibIndex: sibIndex
+		},
+		success: function () {
+			jtag.toggleClass('async-op');
+		}
+	});
+}
+
 function asyncRenameNode(event, data) {
+	//function asyncRenameNode(node, val) {
 	var node = data.args[0]; // args[0] is origin node...
 	var atag = node[0].childNodes[1];
 	var jtag = $(atag);
@@ -219,7 +351,7 @@ function asyncRenameNode(event, data) {
 			xhr.setRequestHeader("X-Http-Method-Override", "PUT");
 		},
 		data: {
-			action: 'rename',
+			updateAction: 'Rename',
 			Name: data.rslt.new_name
 		},
 		error: function (xhr, x, e) {
@@ -242,7 +374,10 @@ function asyncUpdateDept(dlg) {
 			xhr.setRequestHeader("X-Http-Method-Override", "PUT");
 		},
 		data: {
-			ShortName: $('#ShortName').val()
+			updateAction: 'Update',
+			ShortName: $('#ShortName').val(),
+			Code: $('#Code').val(),
+			HrmsOrgUnit: $('#HrmsOrgUnit').val()
 			//action: 'update',
 			//notes: $('#notes').val(),
 			//due: $('#dueDatePicker').val()

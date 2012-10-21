@@ -15,5 +15,14 @@
 }
 <div id="OrgTree">Loading Org Structure...</div>
 <div id="DeptDetail" title="edit department">
+	2-5 char code:<input id="Code" type="text" />
 	short name:<input id="ShortName" type="text" />
+	HRMS OrgUnit:
+	<select id="HrmsOrgUnit">
+		<option value=""> - none - </option>
+		@foreach (KeyValuePair<int, string> kv in ViewBag.HrmsOrgUnits)
+  {
+	  <option value="@kv.Key">@kv.Value</option>
+  }
+	</select>
 </div>
