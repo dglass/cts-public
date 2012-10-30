@@ -5,6 +5,7 @@ using System.Web;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.Configuration;
+using System.Diagnostics;
 
 namespace OrgNavWebApi.Models
 {
@@ -36,6 +37,21 @@ namespace OrgNavWebApi.Models
 		private ViewModels.PositionNodeVm GetPositionTree(int id)
 		{
 			int uid = 1; // TODO: look this up from authenticated windows user...
+
+			var sp = new Util.SmartProc<PositionNode>() {
+				ConnStr = WebConfigurationManager.ConnectionStrings["OrganizationNavigatorContext"].ConnectionString,
+				ProcName = "GetPositionTree"
+			};
+			sp.Init(); // initializes parameters.  TODO: move this to constructor.
+			sp.Params["@RootPosId"].Value = id;
+			sp.Params["@AppUserId"].Value = uid;
+
+			//var sw = new Stopwatch();
+			//sw.Start();
+			var plist = sp.All();
+			//var et = sw.ElapsedMilliseconds; // ~ 20ms on local laptop
+			//sw.Stop(); 
+
 			var root = new Models.PositionNode
 			{
 				Id = 1,
@@ -43,44 +59,8 @@ namespace OrgNavWebApi.Models
 				Name = "Root Node",
 				IsExpanded = true
 			};
-			var connstr = WebConfigurationManager.ConnectionStrings["OrganizationNavigatorContext"].ConnectionString;
-			using (SqlConnection c = new SqlConnection(connstr))
-			{
-				c.Open();
-				// returns Id, Name, Depth
-				SqlCommand cmd = new SqlCommand("GetPositionTree", c);
-				cmd.CommandType = CommandType.StoredProcedure;
-				cmd.Parameters.Add(new SqlParameter("@RootPosId", id));
-				cmd.Parameters.Add(new SqlParameter("@AppUserId", uid));
-				var r = cmd.ExecuteReader(CommandBehavior.SingleResult);
-				// TODO: direct population of tree structure without pre-loading to list?
-				var st = r.GetSchemaTable();
-				var rs = new DataTable(); // resultset
-				foreach (DataRow colinfo in st.Rows)
-				{
-					rs.Columns.Add(
-						new DataColumn(colinfo["ColumnName"].ToString(),
-						(Type)colinfo["DataType"])
-					);
-				}
-				while (r.Read())
-				{
-					var nr = rs.NewRow();
-					foreach (DataColumn col in rs.Columns)
-					{
-						nr[col] = r.GetValue(rs.Columns.IndexOf(col));
-					}
-					rs.Rows.Add(nr);
-					//NodeList.Add(new OrgUnit()
-					//{
-						//Id = r.GetInt32(0),
-						//Name = r.GetString(1),
-						//Level = r.GetInt32(2) // "depth" column name
-					//});
-				}
-				//root.SubNodes = DataTableToObjectList<PositionNode>(rs);
-				root.SubNodes = TreesFromList(DataTableToObjectList<PositionNode>(rs));
-			}
+
+			root.SubNodes = plist;
 			// TODO: move treebuilding, wrapping into Vm:
 			return new Models.ViewModels.PositionNodeVm(root);
 		}
@@ -126,28 +106,6 @@ namespace OrgNavWebApi.Models
 				level = depth;
 			}
 			return tl;
-		}
-
-		private List<T> DataTableToObjectList<T>(DataTable dt)
-		{
-			var l = new List<T>();
-			foreach (DataRow dr in dt.Rows)
-			{
-				var obj = Activator.CreateInstance<T>();
-				var t = obj.GetType();
-				foreach (DataColumn c in dt.Columns)
-				{
-					// TODO: convention that object property names, types match sproc result column names, types?
-					var p = t.GetProperty(c.ColumnName);
-					if (p != null)
-					{
-						// TODO: type map to convert from dr[c] SqlDbType to .NET type? (seems to auto-convert ok)
-						p.SetValue(obj, dr[c]);
-					}
-				}
-				l.Add(obj);
-			}
-			return l;
 		}
 	}
 }

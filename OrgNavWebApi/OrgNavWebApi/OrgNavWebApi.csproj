@@ -152,6 +152,7 @@
     <Compile Include="Models\PositionNodeState.cs" />
     <Compile Include="Models\PositionRB.cs" />
     <Compile Include="Models\TblCostCenter.cs" />
+    <Compile Include="Models\Util\SmartProc.cs" />
     <Compile Include="Models\ViewModels\PositionNodeVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
