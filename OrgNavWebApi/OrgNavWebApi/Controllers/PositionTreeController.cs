@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using OrgNavWebApi.Models;
+using OrgNavWebApi.Models.ViewModels;
 
 namespace OrgNavWebApi.Controllers
 {
@@ -21,8 +23,14 @@ namespace OrgNavWebApi.Controllers
         public object Get(int id)
         {
 			// TODO: consider Repository as injectable controller dependency...
-			var repo = new Models.AdoRepository<Models.ViewModels.PositionNodeVm>();
-			return repo.Get(id);
+			//var repo = new Models.AdoRepository<Models.ViewModels.PositionNodeVm>();
+			var repo = new AdoRepository<PositionNode>();
+			var rootVm = new PositionNodeVm(PositionNodeVm.TreesFromList(
+				repo.GetFromProc("GetPositionTree", new Dictionary<string,object>() {
+					{ "RootPosId", id },
+					{ "AppUserId", 1 }
+				}))[0]); // takes only first root node
+			return rootVm;
         }
 
 		// CUD ops should post to api/positionnode (not tree)

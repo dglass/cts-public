@@ -22,6 +22,10 @@ namespace OrgNavWebApi
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
+			
+			// added this to handle PUT, DELETE overrides...
+			// see http://www.asp.net/web-api/overview/working-with-http/http-message-handlers
+			GlobalConfiguration.Configuration.MessageHandlers.Add(new Controllers.XHttpMethodDelegatingHandler());
 		}
 	}
 }

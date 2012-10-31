@@ -9,9 +9,7 @@ namespace OrgNavWebApi.Models
 	public interface IRepository<T>
 	{
 		// use these if subclassing specific repository interfaces:
-		//T Get(object id);
-		//T GetAll();
-		object Get(object id);
-		List<object> GetAll();
+		//List<T> Get(object id);
+		List<T> GetFromProc(string procName, Dictionary<string,object> paramHash);
 	}
 }

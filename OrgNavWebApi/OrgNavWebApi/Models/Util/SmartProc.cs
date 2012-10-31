@@ -5,33 +5,51 @@ using System.Web;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Web.Configuration;
 
 namespace OrgNavWebApi.Models.Util
 {
-	// TODO: consider <P,T> to pass ParamCollectionTypes...
-	public class SmartProc<T> where T : class
+	public class SmartProc<T>
 	{
 		public string ConnStr { get; set; }
 		public string ProcName { get; set; }
-	//	public System.Data.IDataParameterCollection Params { get; private set; }
 		public SqlParameterCollection Params { get; private set; }
 		private SqlCommand _cmd;
-		public void Init()
+		private Dictionary<string,object> _paramHash;
+		// TODO: consider this utility class:
+		// https://gist.github.com/858392#file_sql_db_type2_db_type.cs
+		private Dictionary<Type, Type> _netToSqlType = new Dictionary<Type, Type>()
 		{
-			//var sw = new Stopwatch();
-			//sw.Start();
-			using (SqlConnection c = new SqlConnection(ConnStr))
+			{typeof(bool), SqlDbType.Bit.GetType()},
+			{typeof(byte), SqlDbType.TinyInt.GetType()},
+			{typeof(byte[]), SqlDbType.Image.GetType()},
+			{typeof(DateTime), SqlDbType.DateTime.GetType()},
+			{typeof(Decimal), SqlDbType.Decimal.GetType()},
+			{typeof(double), SqlDbType.Float.GetType()},
+			{typeof(Guid), SqlDbType.UniqueIdentifier.GetType()},
+			{typeof(Int16), SqlDbType.SmallInt.GetType()},
+			{typeof(Int32), SqlDbType.Int.GetType()},
+			{typeof(Int64), SqlDbType.BigInt.GetType()},
+			{typeof(object), SqlDbType.Variant.GetType()},
+			{typeof(string), SqlDbType.VarChar.GetType()}
+		};
+
+		public SmartProc (string procName, Dictionary<string,object> paramHash) {
+			// TODO: use ObjectContext for this?
+			ConnStr = WebConfigurationManager.ConnectionStrings["OrganizationNavigatorContext"].ConnectionString;
+
+			_cmd = new SqlCommand(procName);
+			_cmd.CommandType = CommandType.StoredProcedure;
+			_paramHash = paramHash;
+			// this sets param values directly by name; doesn't pre-query for proc param metadata
+			foreach (var k in paramHash.Keys)
 			{
-				c.Open();
-				_cmd = new SqlCommand(ProcName, c);
-				_cmd.CommandType = CommandType.StoredProcedure;
-				Params = _cmd.Parameters;
-				FillSchema(c);
+				_cmd.Parameters.Add(new SqlParameter("@" + k, _netToSqlType[paramHash[k].GetType()]));
+				_cmd.Parameters["@" + k].Value = paramHash[k];
 			}
-			//var et = sw.ElapsedMilliseconds; // ~ 8 ms after connection pooled...
 		}
 
-		public List<T> All()
+		public List<T> All() 
 		{
 			using (SqlConnection c = new SqlConnection(ConnStr))
 			{
@@ -58,61 +76,6 @@ namespace OrgNavWebApi.Models.Util
 					rs.Rows.Add(nr);
 				}
 				return DataTableToObjectList<T>(rs);
-			}
-		}
-
-		private void FillSchema(SqlConnection c)
-		{
-			//using (SqlConnection c = new SqlConnection(ConnStr))
-			//{
-				//c.Open();
-				var sch = c.GetSchema("ProcedureParameters", new string[]{
-					c.Database,
-					null,
-					ProcName});
-				foreach (DataRow pr in sch.Rows)
-				{
-					Params.Add(new SqlParameter(pr["PARAMETER_NAME"].ToString(),
-						GetSqlDbType(pr["DATA_TYPE"].ToString())));
-				}
-			//}
-		}
-
-		private SqlDbType GetSqlDbType(string type) {
-			switch (type)
-			{
-				case "bigint": return SqlDbType.BigInt;
-				case "binary": return SqlDbType.Binary;
-				case "bit": return SqlDbType.Bit;
-				case "char": return SqlDbType.Char;
-				case "date": return SqlDbType.Date;
-				case "datetime": return SqlDbType.DateTime;
-				case "datetime2": return SqlDbType.DateTime2;
-				case "datetimeoffset": return SqlDbType.DateTimeOffset;
-				case "decimal": return SqlDbType.Decimal;
-				case "float": return SqlDbType.Float;
-				case "image": return SqlDbType.Image;
-				case "int": return SqlDbType.Int;
-				case "money": return SqlDbType.Money;
-				case "nchar": return SqlDbType.NChar;
-				case "ntext": return SqlDbType.NText;
-				case "nvarchar": return SqlDbType.NVarChar;
-				case "real": return SqlDbType.Real;
-				case "smalldatetime": return SqlDbType.SmallDateTime;
-				case "smallint": return SqlDbType.SmallInt;
-				case "smallmoney": return SqlDbType.SmallMoney;
-				case "structured": return SqlDbType.Structured;
-				case "text": return SqlDbType.Text;
-				case "time": return SqlDbType.Time;
-				case "timestamp": return SqlDbType.Timestamp;
-				case "tinyint": return SqlDbType.TinyInt;
-				case "udt": return SqlDbType.Udt;
-				case "uniqueidentifier": return SqlDbType.UniqueIdentifier;
-				case "varbinary": return SqlDbType.VarBinary;
-				case "varchar": return SqlDbType.VarChar;
-				case "variant": return SqlDbType.Variant;
-				case "xml": return SqlDbType.Xml;
-				default: throw new Exception(String.Format("{0} db type not found.", type));
 			}
 		}
 
