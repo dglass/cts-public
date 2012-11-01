@@ -38,7 +38,7 @@ namespace OrgNavWebApi.Models.Util
 			_cmd = new SqlCommand(procName);
 			_cmd.CommandType = CommandType.StoredProcedure;
 			// this sets param values directly by name; doesn't validate against proc metadata
-			// will through runtime error if params are missing / wrong type
+			// will throw runtime error if params are missing / wrong type
 			foreach (PropertyInfo prop in t.GetProperties())
 			{
 				var val = prop.GetValue(parameters);
