@@ -14,6 +14,7 @@ namespace OrgNavWebApi.Models
 		public string Name { get; set; } // TODO: PositionName, PersonName, OrgUnitName...
 		public bool IsExpanded { get; set; }
 		public int depth { get; set; } // used for non-recursive tree construction
+		public int ChildCount { get; set; }
 
 		public List<PositionNode> SubNodes { get; set; }
 

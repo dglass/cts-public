@@ -20,5 +20,10 @@ namespace OrgNavWebApi.Models
 			List<T> result = sp.All();
 			return result;
 		}
+
+		public static bool Exec(string procName, Dictionary<string, object> paramHash)
+		{
+			return new Util.SmartProc<T>(procName, paramHash).Exec();
+		}
 	}
 }

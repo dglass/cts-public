@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Web.Configuration;
+using System.Reflection;
 
 namespace OrgNavWebApi.Models.Util
 {
@@ -49,6 +50,17 @@ namespace OrgNavWebApi.Models.Util
 			}
 		}
 
+		// TODO: Exec<T> ?
+		public bool Exec() // aka "non-query" - Create, Update, Insert, etc.
+		{
+			using (SqlConnection c = new SqlConnection(ConnStr)) {
+				_cmd.Connection = c;
+				c.Open();
+				var result = _cmd.ExecuteNonQuery();
+				return (result > 0);
+			}
+		}
+
 		public List<T> All() 
 		{
 			using (SqlConnection c = new SqlConnection(ConnStr))
@@ -89,7 +101,9 @@ namespace OrgNavWebApi.Models.Util
 				foreach (DataColumn c in dt.Columns)
 				{
 					// TODO: convention that object property names, types match sproc result column names, types?
-					var p = t.GetProperty(c.ColumnName);
+					// http://msdn.microsoft.com/en-us/library/kyaxdd3x.aspx BindingFlags usage
+					var p = t.GetProperty(c.ColumnName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+					//var p = t.GetProperty(c.ColumnName);
 					if (p != null)
 					{
 						// TODO: type map to convert from dr[c] SqlDbType to .NET type? (seems to auto-convert ok)

@@ -25,11 +25,13 @@ namespace OrgNavWebApi.Controllers
 			// TODO: consider Repository as injectable controller dependency...
 			//var repo = new Models.AdoRepository<Models.ViewModels.PositionNodeVm>();
 			var repo = new AdoRepository<PositionNode>();
-			var rootVm = new PositionNodeVm(PositionNodeVm.TreesFromList(
+			//var rootVm = new PositionNodeVm(PositionNodeVm.TreesFromList(
+			var rootVm = PositionNodeVm.VmTreesFromList(
 				repo.GetFromProc("GetPositionTree", new Dictionary<string,object>() {
 					{ "RootPosId", id },
 					{ "AppUserId", 1 }
-				}))[0]); // takes only first root node
+				//}))[0]); // takes only first root node
+				}));
 			return rootVm;
         }
 
