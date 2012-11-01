@@ -63,8 +63,9 @@ namespace OrgNavWebApi.Models.Util
 			{
 				_cmd.Connection = c;
 				c.Open();
+
+				// TODO: consider SqlDataAdapter here?
 				var r = _cmd.ExecuteReader(CommandBehavior.SingleResult);
-				// TODO: direct population of tree structure without pre-loading to list?
 				var st = r.GetSchemaTable();
 				var rs = new DataTable(); // resultset
 				foreach (DataRow colinfo in st.Rows)

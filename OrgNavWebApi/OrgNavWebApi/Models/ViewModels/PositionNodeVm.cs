@@ -62,13 +62,11 @@ namespace OrgNavWebApi.Models.ViewModels
 					{
 						nt.Add(n);
 					}
-					//nt[level - rootlevel].SubNodes.Add(nt[depth - rootlevel]);
 					nt[level - rootlevel].children.Add(nt[depth - rootlevel]);
 				}
 				else if (depth <= level && depth > rootlevel)
 				{
 					nt[depth - rootlevel] = n;
-//					nt[depth - rootlevel - 1].SubNodes.Add(n);
 					nt[depth - rootlevel - 1].children.Add(n);
 				}
 				else if (depth == rootlevel)
@@ -77,11 +75,6 @@ namespace OrgNavWebApi.Models.ViewModels
 					tl.Add(n);
 					nt[0] = n;
 				}
-				// attach children of root:
-				//if (depth == rootlevel + 1)
-				//{
-					//nt[0].children.Add(n);
-				//}
 
 				// outdenting...set preceding node last-sibling states if applicable:
 				if (depth < level) {
@@ -131,7 +124,6 @@ namespace OrgNavWebApi.Models.ViewModels
 			}
 		}
 
-		// TODO: set attr[id,complete,lazy, etc.]..., state: "leaf jstree-last", etc.
 		private bool IsLeaf {
 			get
 			{
