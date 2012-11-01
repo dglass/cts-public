@@ -10,13 +10,21 @@ namespace OrgNavWebApi
 		public static void Register(HttpConfiguration config)
 		{
 			config.Routes.MapHttpRoute(
-				name: "LazyLoad",
-				routeTemplate: "api/{controller}/{id}/subnodes"
-				//routeTemplate: "api/{controller}/{id}/subnodes/{all}"
-				//defaults: new {
-					//all = RouteParameter.Optional,
-					//action = "GetLazyExpand"
-				//}
+				name: "NodeOp",
+				routeTemplate: "api/node/{id}",
+				defaults: new
+				{
+					action = "NodeOp",
+					controller = "Node"
+				}
+			);
+
+			config.Routes.MapHttpRoute(
+				name: "SubNodes",
+				routeTemplate: "api/{controller}/{id}/subnodes",
+				defaults: new {
+					action = "GetLazyExpand"
+				}
 			);
 
 			config.Routes.MapHttpRoute(

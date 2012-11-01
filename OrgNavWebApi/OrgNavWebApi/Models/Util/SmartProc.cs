@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Web.Configuration;
 using System.Reflection;
+using System.Web.Configuration;
 
 namespace OrgNavWebApi.Models.Util
 {
-	public class SmartProc<T>
+	public class SmartProc
 	{
 		public string ConnStr { get; set; }
 		public string ProcName { get; set; }
 		public SqlParameterCollection Params { get; private set; }
 		private SqlCommand _cmd;
-		private Dictionary<string,object> _paramHash;
 		// TODO: consider this utility class:
 		// https://gist.github.com/858392#file_sql_db_type2_db_type.cs
 		private Dictionary<Type, Type> _netToSqlType = new Dictionary<Type, Type>()
@@ -35,23 +31,23 @@ namespace OrgNavWebApi.Models.Util
 			{typeof(string), SqlDbType.VarChar.GetType()}
 		};
 
-		public SmartProc (string procName, Dictionary<string,object> paramHash) {
-			// TODO: use ObjectContext for this?
-			ConnStr = WebConfigurationManager.ConnectionStrings["OrganizationNavigatorContext"].ConnectionString;
-
+		public SmartProc(string procName, string connKey, dynamic parameters)
+		{
+			var t = parameters.GetType();
+			ConnStr = WebConfigurationManager.ConnectionStrings[connKey].ConnectionString;
 			_cmd = new SqlCommand(procName);
 			_cmd.CommandType = CommandType.StoredProcedure;
-			_paramHash = paramHash;
-			// this sets param values directly by name; doesn't pre-query for proc param metadata
-			foreach (var k in paramHash.Keys)
+			// this sets param values directly by name; doesn't validate against proc metadata
+			// will through runtime error if params are missing / wrong type
+			foreach (PropertyInfo prop in t.GetProperties())
 			{
-				_cmd.Parameters.Add(new SqlParameter("@" + k, _netToSqlType[paramHash[k].GetType()]));
-				_cmd.Parameters["@" + k].Value = paramHash[k];
+				var val = prop.GetValue(parameters);
+				_cmd.Parameters.Add(new SqlParameter("@" + prop.Name, _netToSqlType[val.GetType()]));
+				_cmd.Parameters["@" + prop.Name].Value = val;
 			}
 		}
 
-		// TODO: Exec<T> ?
-		public bool Exec() // aka "non-query" - Create, Update, Insert, etc.
+		public bool Exec() // aka "non-query" - could be Create, Update, Insert, etc.
 		{
 			using (SqlConnection c = new SqlConnection(ConnStr)) {
 				_cmd.Connection = c;
@@ -61,7 +57,7 @@ namespace OrgNavWebApi.Models.Util
 			}
 		}
 
-		public List<T> All() 
+		public List<T> All<T>() 
 		{
 			using (SqlConnection c = new SqlConnection(ConnStr))
 			{
@@ -103,7 +99,6 @@ namespace OrgNavWebApi.Models.Util
 					// TODO: convention that object property names, types match sproc result column names, types?
 					// http://msdn.microsoft.com/en-us/library/kyaxdd3x.aspx BindingFlags usage
 					var p = t.GetProperty(c.ColumnName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-					//var p = t.GetProperty(c.ColumnName);
 					if (p != null)
 					{
 						// TODO: type map to convert from dr[c] SqlDbType to .NET type? (seems to auto-convert ok)

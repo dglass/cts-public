@@ -4,6 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrgNavWebApi", "OrgNavWebApi\OrgNavWebApi.csproj", "{9E2A9A13-19DC-4E0B-BD95-BCD1F221055F}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs:8080/tfs/cts%20projects
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = OrgNavWebApi\\OrgNavWebApi.csproj
+		SccProjectName1 = OrgNavWebApi
+		SccLocalPath1 = OrgNavWebApi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

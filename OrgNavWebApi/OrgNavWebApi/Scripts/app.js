@@ -15,7 +15,8 @@ $(function () {
 
 	$.ajax({
 		type: 'GET',
-		url: 'api/positiontree/71027130', // this is the DIRECTOR (root) position.
+		//url: 'api/positiontree/71027130', // this is the DIRECTOR (root) position.
+		url: 'api/node/71027130', // this is the DIRECTOR (root) position.
 		success: function (d) {
 			bindTree(d);
 		}

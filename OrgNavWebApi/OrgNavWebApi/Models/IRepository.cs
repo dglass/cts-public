@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace OrgNavWebApi.Models
 {
-	public interface IRepository<T>
+	public interface IRepository
 	{
-		// use these if subclassing specific repository interfaces:
-		//List<T> Get(object id);
-		List<T> GetFromProc(string procName, Dictionary<string,object> paramHash);
+		// Exec could be made a static Repository method, but there's not much point.
+		// http://www.jagregory.com/writings/static-method-abuse/
+		bool Exec(string procName, dynamic parameters);
+		List<T> GetFromProc<T>(string procName, dynamic parameters);
+		T GetSingleFromProc<T>(string procName, dynamic parameters);
 	}
 }

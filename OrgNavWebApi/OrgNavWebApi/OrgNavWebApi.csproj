@@ -17,9 +17,13 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
+    <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -124,8 +128,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NodeController.cs" />
-    <Compile Include="Controllers\PositionTreeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\XHttpMethodDelegatingHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -133,27 +135,7 @@
     <Compile Include="Models\AdoRepository.cs" />
     <Compile Include="Models\AppUser.cs" />
     <Compile Include="Models\IRepository.cs" />
-    <Compile Include="Models\Mapping\AppUserMap.cs" />
-    <Compile Include="Models\Mapping\OrgStructureSAPMap.cs" />
-    <Compile Include="Models\Mapping\OrgUnitCTMap.cs" />
-    <Compile Include="Models\Mapping\OrgUnitMap.cs" />
-    <Compile Include="Models\Mapping\OrgUnitNodeCTMap.cs" />
-    <Compile Include="Models\Mapping\OrgUnitNodeMap.cs" />
-    <Compile Include="Models\Mapping\PositionNodeMap.cs" />
-    <Compile Include="Models\Mapping\PositionNodeStateMap.cs" />
-    <Compile Include="Models\Mapping\PositionRBMap.cs" />
-    <Compile Include="Models\Mapping\TblCostCenterMap.cs" />
-    <Compile Include="Models\OrganizationNavigatorContext.cs" />
-    <Compile Include="Models\OrgStructureSAP.cs" />
-    <Compile Include="Models\OrgUnit.cs" />
-    <Compile Include="Models\OrgUnitCT.cs" />
-    <Compile Include="Models\OrgUnitNode.cs" />
-    <Compile Include="Models\OrgUnitNodeCT.cs" />
     <Compile Include="Models\PositionNode.cs" />
-    <Compile Include="Models\PositionNodeDB.cs" />
-    <Compile Include="Models\PositionNodeState.cs" />
-    <Compile Include="Models\PositionRB.cs" />
-    <Compile Include="Models\TblCostCenter.cs" />
     <Compile Include="Models\Util\SmartProc.cs" />
     <Compile Include="Models\ViewModels\PositionNodeVm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -266,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Mapping\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
