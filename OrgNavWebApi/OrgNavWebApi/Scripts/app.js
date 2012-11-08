@@ -2,6 +2,8 @@
 var shiftPressed = false;
 var approot = 'api/';
 var jst; // "needle" pointer to tree
+//var clickSelect = $("<span id='clickSelect' style='color: blue; padding:0 0 0 5px; font:10pt Arial, sans-serif;' >click name to select</span>");
+var lastHoveredNode;
 
 $(function () {
 	// pre-initialization before tree construction:
@@ -36,6 +38,21 @@ function bindTree(rootNode) {
 function setupEventBindings() {
 	theTree.bind("close_node.jstree", asyncCollapseNode);
 	theTree.bind("open_node.jstree", asyncExpandNode);
+	theTree.bind("select_node.jstree", selectNode);
+	theTree.bind("hover_node.jstree", hoverNode);
+}
+
+function hoverNode(evt, data) {
+	if (data.args != undefined) {
+		lastHoveredNode = $(data.rslt.obj[0]);
+	}
+}
+
+function selectNode(evt, data) {
+	var node = data.rslt.obj;
+	if (lastHoveredNode != undefined && node.attr('id') == lastHoveredNode.attr('id')) {
+		jst.toggle_node(node);
+	}
 }
 
 // async event handlers

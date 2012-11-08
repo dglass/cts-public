@@ -4,26 +4,6 @@
  * Supported plugins: ui (hovered, clicked), checkbox, contextmenu, search
  */
 
-/* begin customizations -DRG */
-.jstree-default .async-op
-{
-    color: #CC6600;
-}
-
-/* not sure why this is needed, but it is... also manually changed top from 0px to -5px in jstree.js */
-/* TODO: fix hardcoded 150px textbox width in jstree... */
-.jstree-rename-input {
-	font-size: 14px; /* Chrome seems to ignore */
-	font-family: 'Segoe UI';
-}
-
-/* this is to remove orange box in Chrome: */
-input:focus {
-	outline:none;
-}
-
-/* end customizations -DRG */
-
 .jstree-default li, 
 .jstree-default ins { background-image:url("d.png"); background-repeat:no-repeat; background-color:transparent; }
 .jstree-default li { background-position:-90px 0; background-repeat:repeat-y; }
@@ -32,15 +12,8 @@ input:focus {
 .jstree-default .jstree-closed > ins { background-position:-54px 0; }
 .jstree-default .jstree-leaf > ins { background-position:-36px 0; }
 
-.jstree-default .jstree-hovered {
-	background:#e7f4f9; border:1px solid #d8f0fa; padding:0 2px 0 1px;
-}
-/* DRG replaced: .jstree-default .jstree-clicked { background:#beebff; border:1px solid #99defd; padding:0 2px 0 1px; }*/
-/* NOTE, this does not bypass jstree selection event, just makes it (mostly) invisible (border turns white)... */
-.jstree-default .jstree-clicked 
-{
-	border:1px solid #ffffff; padding:0 2px 0 1px;
-}
+.jstree-default .jstree-hovered { background:#e7f4f9; border:1px solid #d8f0fa; padding:0 2px 0 1px; }
+.jstree-default .jstree-clicked { background:#beebff; border:1px solid #99defd; padding:0 2px 0 1px; }
 .jstree-default a .jstree-icon { background-position:-56px -19px; }
 .jstree-default a.jstree-loading .jstree-icon { background:url("throbber.gif") center center no-repeat !important; }
 
