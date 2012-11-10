@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace OrgManagerWebAPI
+namespace OrgManagerWebApi
 {
 	public class BundleConfig
 	{

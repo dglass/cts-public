@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace OrgManagerWebAPI
+namespace OrgManagerWebApi
 {
 	public class FilterConfig
 	{

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OrgManagerWebAPI.Controllers
+namespace OrgManagerWebApi.Controllers
 {
 	public class HomeController : Controller
 	{

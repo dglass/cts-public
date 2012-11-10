@@ -119,13 +119,14 @@ namespace OrgManagerWebApi.Models.ViewModels
 			get
 			{
 				// need to wrap each _model.PositionNode with ViewModel:
-				if (_children.Count == 0 && _model.SubNodes.Count > 0)
-				{
-					foreach (var m in _model.SubNodes)
-					{
-						_children.Add(new NodeVm(m));
-					}
-				}
+				// TODO: populate _model.SubNodes if using this.
+				//if (_children.Count == 0 && _model.SubNodes.Count > 0)
+				//{
+				//	foreach (var m in _model.SubNodes)
+				//	{
+				//		_children.Add(new NodeVm(m));
+				//	}
+				//}
 				return _children;
 			}
 		}
@@ -147,7 +148,7 @@ namespace OrgManagerWebApi.Models.ViewModels
 					_state =
 						// this version only applies when lazy-loading is enabled:
 						//IsLeaf && _model.ChildCount == 0 ? "leaf" : _model.IsExpanded ? "open" : "closed";
-					IsLeaf ? "jstree-leaf" : "jstree-open";
+					IsLeaf ? "leaf" : "open";
 				}
 				return _state;
 			}

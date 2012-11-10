@@ -49,11 +49,21 @@ namespace OrgManagerWebApi.Models.Util
 
 		public bool Exec() // aka "non-query" - could be Create, Update, Insert, etc.
 		{
-			using (SqlConnection c = new SqlConnection(ConnStr)) {
-				_cmd.Connection = c;
-				c.Open();
-				var result = _cmd.ExecuteNonQuery();
-				return (result > 0);
+			try
+			{
+				using (SqlConnection c = new SqlConnection(ConnStr))
+				{
+					_cmd.Connection = c;
+					c.Open();
+					var result = _cmd.ExecuteNonQuery();
+					return (result > 0);
+				}
+			}
+			catch (Exception xcp) // could catch SQL Exception, return message.
+			{
+				// TODO: log exception either in SQL log or elsewhere.
+				// for now just return simple failure message to client.
+				return false;
 			}
 		}
 
@@ -100,7 +110,8 @@ namespace OrgManagerWebApi.Models.Util
 					// TODO: convention that object property names, types match sproc result column names, types?
 					// http://msdn.microsoft.com/en-us/library/kyaxdd3x.aspx BindingFlags usage
 					var p = t.GetProperty(c.ColumnName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
-					if (p != null)
+					// TODO: nullify nullable properties if DBNull? (this skips them)
+					if (p != null && dr[c].GetType() != typeof(DBNull))
 					{
 						// TODO: type map to convert from dr[c] SqlDbType to .NET type? (seems to auto-convert ok)
 						p.SetValue(obj, dr[c]);

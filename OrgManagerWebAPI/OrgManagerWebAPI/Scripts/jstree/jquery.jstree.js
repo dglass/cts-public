@@ -1278,8 +1278,10 @@
 							"border" : "1px solid silver",
 							"position" : "absolute",
 							"left"  : (rtl ? "auto" : (w1 + w2 + 4) + "px"),
-							"right" : (rtl ? (w1 + w2 + 4) + "px" : "auto"),
-							"top" : "0px",
+							"right": (rtl ? (w1 + w2 + 4) + "px" : "auto"),
+							// DRG: had to change 0px to -5px for textbox to fit original LI space...also changed CSS
+							//"top" : "0px",
+							"top": "-5px",
 							"height" : (this.data.core.li_height - 2) + "px",
 							"lineHeight" : (this.data.core.li_height - 2) + "px",
 							"width" : "150px" // will be set a bit further down
