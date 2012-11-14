@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSI_ObjUpdater", "PSI_ObjUpdater\PSI_ObjUpdater.csproj", "{98ADD118-D813-4030-87DA-CA126DD4DADA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsObjectSync", "PsObjectSync\PsObjectSync.csproj", "{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98ADD118-D813-4030-87DA-CA126DD4DADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98ADD118-D813-4030-87DA-CA126DD4DADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98ADD118-D813-4030-87DA-CA126DD4DADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98ADD118-D813-4030-87DA-CA126DD4DADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
