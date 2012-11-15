@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.Project.Server.Events.Receivers, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\Microsoft.Office.Project.Server.Events.Receivers.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,10 +52,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PsEventHandlers\PsEventHandlers.csproj">
+      <Project>{a2d18997-20c7-4149-b4a3-92e3a69dae0c}</Project>
+      <Name>PsEventHandlers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PsObjectSync\PsObjectSync.csproj">
       <Project>{9729fbb9-bbd5-48bf-8db5-1015dad720fc}</Project>
       <Name>PsObjectSync</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lib\Microsoft.Office.Project.Server.Events.Receivers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

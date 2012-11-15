@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSI_ObjUpdater", "PSI_ObjUp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsObjectSync", "PsObjectSync\PsObjectSync.csproj", "{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PsEventHandlers", "PsEventHandlers\PsEventHandlers.csproj", "{A2D18997-20C7-4149-B4A3-92E3A69DAE0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9729FBB9-BBD5-48BF-8DB5-1015DAD720FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2D18997-20C7-4149-B4A3-92E3A69DAE0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2D18997-20C7-4149-B4A3-92E3A69DAE0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2D18997-20C7-4149-B4A3-92E3A69DAE0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2D18997-20C7-4149-B4A3-92E3A69DAE0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

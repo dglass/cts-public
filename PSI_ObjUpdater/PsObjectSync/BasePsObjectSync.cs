@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.ServiceModel;
+using Microsoft.Office.Project.Server.Events;
 
 namespace PsObjectSync
 {
+    //public class BasePsObjectSync : ProjectEventReceiver
     public class BasePsObjectSync
     {
 		public string PwaUri { get; set; }
