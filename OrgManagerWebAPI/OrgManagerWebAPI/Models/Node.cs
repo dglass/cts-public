@@ -10,10 +10,13 @@ namespace OrgManagerWebApi.Models
 	{
 		public int Id { get; set; }
 		public int HrmsOrgUnitId { get; set; }
+		public string HrmsOrgUnitDescription { get; set; }
 		public string Code { get; set; }
 		public string Name { get; set; }
 		public string ShortName { get; set; }
 		public int Depth { get; set; }
+		public int FilledPositions { get; set; }
+		public int PositionCount { get; set; }
 		// SubNodes has been replaced by ViewModel children property.
 		//public List<Node> SubNodes = new List<Node>();
 

@@ -137,7 +137,7 @@ function setupEventBindings() {
 }
 
 function showEditForm(n) {
-	var link = $(n).find("a");
+	var link = $(n).find("a").first();
 	link.toggleClass('async-op');
 	// first retrieve details from server (todo: cache these for multiple edits in a session)
 	$.ajax({
@@ -146,9 +146,13 @@ function showEditForm(n) {
 		success: function (d) {
 			var dv = eval(d); // this to convert JSON string into JS object.
 			link.toggleClass('async-op');
+			$('#Id').html((dv['Id']));
 			$('#ShortName').val(dv['ShortName']);
 			$('#Code').val(dv['Code']);
 			$('#HrmsOrgUnit').html((dv['HrmsOrgUnitId']));
+			$('#HrmsOrgUnitName').html((dv['HrmsOrgUnitDescription']));
+			$('#FilledPositions').html((dv['FilledPositions']));
+			$('#PositionCount').html((dv['PositionCount']));
 			// TODO: dynamic jQuery form construction at runtime???
 			$('#DeptDetail').css('visibility', 'visible'); // reveal form elements hidden during initial load
 			$('#DeptDetail').dialog('open');
@@ -327,7 +331,7 @@ function asyncMoveNode(event, data) {
 function asyncRenameNode(event, data) {
 	//function asyncRenameNode(node, val) {
 	var node = data.args[0]; // args[0] is origin node...
-	var link = $(node).find("a");
+	var link = $(node).find("a").first();
 	link.toggleClass('async-op');
 	$.ajax({
 		url: appRoot + ouPath + node.attr("id"),
